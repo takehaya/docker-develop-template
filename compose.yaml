@@ -1,0 +1,25 @@
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+      args:
+        BASIC_AUTH_USER: your_user
+        BASIC_AUTH_PASSWORD: your_password
+    container_name: basic_auth_nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+    ports:
+      - "8080:8080"
+    depends_on:
+      - app
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.java
+    container_name: app
+    expose:
+      - "8000"
+    environment:
+      - ENV_VAR=value
